@@ -17,7 +17,6 @@ app.get('/', function (req, res) {
 app.get('/makeperson', humanBehavior.ShowHuman);
 
 
-
 //server config
 var server = app.listen(3000, function () {
 
