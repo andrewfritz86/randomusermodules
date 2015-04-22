@@ -11,7 +11,13 @@ humanBehavior.MakeHuman = function(name, gender, nationality, picture){
     this.name = name,
     this.gender = gender,
     this.nationality = nationality,
-    this.picture = picture
+    this.picture = picture,
+    this.render = function(){
+        console.log("behavior time")
+        var template = fs.readFileSync('./show.html', 'utf8');
+        var html = mustache.render(template, {name: this.name, gender: this.gender, picture: this.picture, nationality: this.nationality});
+        return html;
+    }
 }
 
 humanBehavior.ShowHuman = function(req,res){
@@ -22,9 +28,7 @@ humanBehavior.ShowHuman = function(req,res){
         var nationality = parsed.results[0].user.nationality;
         var picture = parsed.results[0].user.picture.medium;
         var newHuman = new humanBehavior.MakeHuman(name, gender, nationality, picture);
-        var template = fs.readFileSync('./show.html', 'utf8');
-        var html = mustache.render(template, newHuman)
-        res.send(html);
+        res.send(newHuman.render());
     })
 }
 
