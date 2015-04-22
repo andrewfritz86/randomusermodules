@@ -1,17 +1,23 @@
 var request = require('request');
 var mustache = require('mustache');
 var fs = require('fs');
+
 //create an object to store our humanBehavior (functions)
 var humanBehavior = {}
-//we can 'export' behavior and data from this namespace as an object. It can then be required
-//in other files and referenced as a module, thus keeping the global namespace clean
-module.exports = humanBehavior;
 
+
+//create functions to export to our main program
 humanBehavior.MakeHuman = function(name, gender, nationality, picture){
     this.name = name,
     this.gender = gender,
     this.nationality = nationality,
-    this.picture = picture
+    this.picture = picture,
+    this.render = function(){
+        console.log("behavior time")
+        var template = fs.readFileSync('./show.html', 'utf8');
+        var html = mustache.render(template, {name: this.name, gender: this.gender, picture: this.picture, nationality: this.nationality});
+        return html;
+    }
 }
 
 humanBehavior.ShowHuman = function(req,res){
@@ -22,10 +28,11 @@ humanBehavior.ShowHuman = function(req,res){
         var nationality = parsed.results[0].user.nationality;
         var picture = parsed.results[0].user.picture.medium;
         var newHuman = new humanBehavior.MakeHuman(name, gender, nationality, picture);
-        var template = fs.readFileSync('./show.html', 'utf8');
-        var html = mustache.render(template, newHuman)
-        res.send(html);
+        res.send(newHuman.render());
     })
 }
 
 
+//we can 'export' behavior and data from this namespace as an object. It can then be required
+//in other files and referenced as a module, thus keeping the global namespace clean
+module.exports = humanBehavior;

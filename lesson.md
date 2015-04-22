@@ -20,5 +20,6 @@ Objectives
   - we want to be able to package data in objects. Sometimes this is done automatically for use (sqlite library). We can use constructors to build custom objects with data.
   - WE DO
     - return to Human constructor. Let's get some data for this from an outside source. Random user API. We can use data from that API to construct Human instances.
+    - let's add some behavior. render function.
   - YOU DO
     - make a webapp that grabs random users, models them as objects, and renders the model out as a view.
